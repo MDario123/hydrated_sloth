@@ -15,20 +15,19 @@ struct Args {
 fn main() -> Result<(), PlatformError> {
     let args = Args::parse();
 
-    let just_drank_water = args.water;
-    if just_drank_water {
-        println!("Just drank water!");
-    }
-
     if args.gui {
         let main_window = WindowDesc::new(ui_builder());
         let data = 0_u32;
-        AppLauncher::with_window(main_window)
+        return AppLauncher::with_window(main_window)
             .log_to_console()
-            .launch(data)
-    } else {
-        Ok(())
+            .launch(data);
     }
+
+    if args.water {
+        println!("Just drank water!");
+    }
+
+    Ok(())
 }
 
 fn ui_builder() -> impl Widget<u32> {
