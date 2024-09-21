@@ -38,7 +38,7 @@ jobs:
       - name: install additional linux dependencies
         run: |
           sudo apt update
-          sudo apt install libpango1.0-dev libxkbcommon-dev libxkbcommon-x11-dev libatk1.0-0
+          sudo apt install libpango1.0-dev libxkbcommon-dev libxkbcommon-x11-dev libatk1.0-0 libgtk-3-dev
         if: contains(matrix.os, 'ubuntu')
 
       - name: install stable toolchain
