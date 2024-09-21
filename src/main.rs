@@ -6,7 +6,7 @@ struct State {
     #[data(eq)]
     sleep: Vec<(DateTime<Local>, Duration)>,
     #[data(eq)]
-    water: Vec<Duration>,
+    water: Vec<DateTime<Local>>,
 }
 
 fn main() -> Result<(), PlatformError> {
