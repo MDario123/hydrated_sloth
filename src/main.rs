@@ -1,5 +1,13 @@
-use druid::widget::{Button, Flex, Label};
-use druid::{AppLauncher, LocalizedString, PlatformError, Widget, WidgetExt, WindowDesc};
+use chrono::{DateTime, Local, Duration};
+use druid::{Data, PlatformError};
+
+#[derive(Clone, Data)]
+struct State {
+    #[data(eq)]
+    sleep: Vec<(DateTime<Local>, Duration)>,
+    #[data(eq)]
+    water: Vec<Duration>,
+}
 
 fn main() -> Result<(), PlatformError> {
     let main_window = WindowDesc::new(ui_builder());
