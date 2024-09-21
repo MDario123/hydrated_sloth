@@ -5,6 +5,7 @@ edition = "2021"
 
 [dependencies]
 clap = { version = "4.5.18", features = ["derive"] }
+chrono = "0.4.38"
 druid = { version = "0.8.3", features = ["chrono", "serde"] }
 serde = { version = "1.0.210", features = ["derive"] }
 

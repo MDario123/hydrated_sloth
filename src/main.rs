@@ -1,6 +1,16 @@
+use chrono::{DateTime, Duration, Local};
 use clap::Parser;
 use druid::widget::{Button, Flex, Label};
+use druid::Data;
 use druid::{AppLauncher, LocalizedString, PlatformError, Widget, WidgetExt, WindowDesc};
+
+#[derive(Clone, Data)]
+struct State {
+    #[data(eq)]
+    sleep: Vec<(DateTime<Local>, Duration)>,
+    #[data(eq)]
+    water: Vec<DateTime<Local>>,
+}
 
 #[derive(Parser, Debug)]
 #[command(version="0.1.0", about="Minimalistic widget to track sleep and hydration.", long_about = None)]
