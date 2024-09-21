@@ -1,12 +1,34 @@
+use clap::Parser;
 use druid::widget::{Button, Flex, Label};
 use druid::{AppLauncher, LocalizedString, PlatformError, Widget, WidgetExt, WindowDesc};
 
+#[derive(Parser, Debug)]
+#[command(version="0.1.0", about="Minimalistic widget to track sleep and hydration.", long_about = None)]
+struct Args {
+    #[arg(short, long)]
+    water: bool,
+
+    #[arg(short, long)]
+    gui: bool,
+}
+
 fn main() -> Result<(), PlatformError> {
-    let main_window = WindowDesc::new(ui_builder());
-    let data = 0_u32;
-    AppLauncher::with_window(main_window)
-        .log_to_console()
-        .launch(data)
+    let args = Args::parse();
+
+    let just_drank_water = args.water;
+    if just_drank_water {
+        println!("Just drank water!");
+    }
+
+    if args.gui {
+        let main_window = WindowDesc::new(ui_builder());
+        let data = 0_u32;
+        AppLauncher::with_window(main_window)
+            .log_to_console()
+            .launch(data)
+    } else {
+        Ok(())
+    }
 }
 
 fn ui_builder() -> impl Widget<u32> {
