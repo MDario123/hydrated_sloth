@@ -1,52 +1,27 @@
-use std::io::Write;
+mod cli;
+mod state;
+
 use std::path::Path;
 
-use chrono::{DateTime, Duration, Local};
+use chrono::Local;
 use clap::Parser;
+use cli::Args;
 use druid::widget::{Button, Flex, Label};
-use druid::Data;
 use druid::{AppLauncher, LocalizedString, PlatformError, Widget, WidgetExt, WindowDesc};
-use serde::{Deserialize, Serialize};
-use serde_with::serde_as;
+use state::{load_state, save_state, State};
 
-#[serde_as]
-#[derive(Clone, Data, Deserialize, Serialize, Debug, Default)]
-struct State {
-    #[data(eq)]
-    #[serde_as(as = "Vec<(_, serde_with::DurationSeconds<i64>)>")]
-    sleep: Vec<(DateTime<Local>, Duration)>,
-    #[data(eq)]
-    water: Vec<DateTime<Local>>,
-}
-
-#[derive(Parser, Debug)]
-#[command(version="0.1.0", about="Minimalistic widget to track sleep and hydration.", long_about = None)]
-struct Args {
-    #[arg(short, long)]
-    water: bool,
-
-    #[arg(short, long)]
-    gui: bool,
+fn update_state(state: &mut State, args: &Args) {
+    if args.water {
+        state.water.push(Local::now());
+        println!("Just drank water!💖💖💖");
+    }
 }
 
 fn main() -> Result<(), PlatformError> {
     let state_file: &Path = Path::new("State");
 
     let args = Args::parse();
-
-    // Load state from file
-    {
-        let mut file = std::fs::OpenOptions::new()
-            .create(true)
-            .append(true)
-            .open(state_file)
-            .expect("Failed to open state file");
-        file.write_all(b"").expect("Failed to write state file");
-    }
-    let raw_state = std::fs::read_to_string(state_file).expect("Failed to read state file");
-
-    let mut state: State =
-        serde_json::from_str(raw_state.as_str()).unwrap_or_else(|_| State::default());
+    let mut state = load_state(state_file).expect("Failed to load state");
 
     if args.gui {
         let main_window = WindowDesc::new(ui_builder());
@@ -54,19 +29,14 @@ fn main() -> Result<(), PlatformError> {
         return AppLauncher::with_window(main_window)
             .log_to_console()
             .launch(data);
+    } else {
+        update_state(&mut state, &args);
+
+        #[cfg(debug_assertions)]
+        println!("Saving state... {:?}", &state);
+
+        save_state(&state, state_file).expect("Failed to save state");
     }
-
-    if args.water {
-        state.water.push(Local::now());
-        println!("Just drank water!💖💖💖");
-    }
-
-    #[cfg(debug_assertions)]
-    println!("Saving state... {:?}", &state);
-
-    // Write state to a file
-    let raw_state = serde_json::to_string(&state).expect("Failed to serialize state");
-    std::fs::write(state_file, raw_state).expect("Failed to write state file");
 
     Ok(())
 }
