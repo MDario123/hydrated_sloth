@@ -2,14 +2,15 @@ use crate::gui::day_square::day_square;
 use crate::State;
 use chrono::{DateTime, Datelike, Duration, Local, NaiveDate, NaiveTime, TimeZone, Timelike};
 use druid::widget::Flex;
-use druid::{Widget, WidgetExt};
+use druid::{Color, Widget, WidgetExt};
 
-const HORIZONTAL_PADDING: f64 = 0.0;
+pub const HORIZONTAL_PADDING: f64 = 20.0;
 
-const VERTICAL_PADDING: f64 = 10.0;
+pub const VERTICAL_PADDING: f64 = 10.0;
+
+pub const BACKGROUND_COLOR: Color = Color::rgb8(0x1E, 0x1E, 0x2E);
 
 pub(crate) fn calendar(state: State) -> impl Widget<()> {
-    let mut calendar = Flex::column();
     let now = Local::now();
     let weeks_in_month = weeks_in_month(&now);
     let calendar_first_date = get_calendar_first_date(&now);
@@ -35,18 +36,23 @@ pub(crate) fn calendar(state: State) -> impl Widget<()> {
         }
     }
 
+    let mut calendar = Flex::column();
     for week in 0..weeks_in_month {
         let mut week_container = Flex::row();
         for day_of_week in 0..7 {
             let date = calendar_first_date + Duration::days((week * 7 + day_of_week) as i64);
-            week_container = week_container.with_child(
-                day_square(&validated_state, &date, week * 7 + day_of_week)
-                    .padding((HORIZONTAL_PADDING, VERTICAL_PADDING)),
-            );
+            week_container = week_container.with_child(day_square(
+                &validated_state,
+                &date,
+                week * 7 + day_of_week,
+            ));
         }
+        let week_container = week_container.padding((0.0, VERTICAL_PADDING));
         calendar = calendar.with_child(week_container);
     }
     calendar
+        .padding((HORIZONTAL_PADDING, VERTICAL_PADDING))
+        .background(BACKGROUND_COLOR)
 }
 
 fn get_last_day_of_month(year: i32, month: u32) -> u32 {
@@ -64,7 +70,7 @@ fn get_last_day_of_month(year: i32, month: u32) -> u32 {
     }
 }
 
-fn weeks_in_month(datetime: &DateTime<Local>) -> u32 {
+pub fn weeks_in_month(datetime: &DateTime<Local>) -> u32 {
     // Get the year and month
     let year = datetime.year();
     let month = datetime.month();

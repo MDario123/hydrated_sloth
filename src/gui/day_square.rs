@@ -3,21 +3,21 @@ use chrono::{DateTime, Datelike, Duration, Local, Timelike};
 use druid::widget::{SizedBox, ZStack};
 use druid::{Color, UnitPoint, Vec2, Widget, WidgetExt};
 
-const CONTAINER_WIDTH: f64 = 80.0;
+pub const CONTAINER_WIDTH: f64 = 160.0;
 
-const CONTAINER_HEIGHT: f64 = 40.0;
+pub const CONTAINER_HEIGHT: f64 = 80.0;
 
-const BACKGROUND_COLOR: Color = Color::rgb8(0x69, 0x69, 0x69);
+pub const BACKGROUND_COLOR: Color = Color::rgb8(0x69, 0x69, 0x79);
 
-const MULTIPLIER_PARITY: f64 = 0.95;
+pub const MULTIPLIER_PARITY: f64 = 0.90;
 
-const MULTIPLIER_OFF_MONTH: f64 = 0.60;
+pub const MULTIPLIER_OFF_MONTH: f64 = 0.60;
 
-const SLEEP_COLOR: Color = Color::rgb8(0xA0, 0xE0, 0xA0);
+pub const SLEEP_COLOR: Color = Color::rgb8(0xA0, 0xE0, 0xA0);
 
-const WATER_COLOR: Color = Color::rgb8(0x40, 0xE0, 0xD0);
+pub const WATER_COLOR: Color = Color::rgb8(0x40, 0xE0, 0xD0);
 
-const WATER_WIDTH: f64 = 5.0;
+pub const WATER_WIDTH: f64 = 5.0;
 
 pub(crate) fn day_square(state: &State, date: &DateTime<Local>, parity: u32) -> impl Widget<()> {
     // TODO: fix, this will error in a year
