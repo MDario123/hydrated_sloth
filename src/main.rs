@@ -1,5 +1,8 @@
-use chrono::{DateTime, Local, Duration};
+mod gui;
+
+use chrono::{DateTime, Duration, Local, TimeZone};
 use druid::{Data, PlatformError};
+use gui::gui;
 
 #[derive(Clone, Data)]
 struct State {
@@ -10,21 +13,15 @@ struct State {
 }
 
 fn main() -> Result<(), PlatformError> {
-    let main_window = WindowDesc::new(ui_builder());
-    let data = 0_u32;
-    AppLauncher::with_window(main_window)
-        .log_to_console()
-        .launch(data)
-}
+    let data = State {
+        sleep: vec![
+            (Local::now() + Duration::hours(20), Duration::hours(8)),
+            (Local::now() - Duration::hours(4), Duration::hours(8)),
+        ],
+        water: vec![DateTime::parse_from_rfc3339("2024-09-15T23:59:59+02:00")
+            .unwrap()
+            .into()],
+    };
 
-fn ui_builder() -> impl Widget<u32> {
-    // The label text will be computed dynamically based on the current locale and count
-    let text =
-        LocalizedString::new("hello-counter").with_arg("count", |data: &u32, _env| (*data).into());
-    let label = Label::new(text).padding(5.0).center();
-    let button = Button::new("increment")
-        .on_click(|_ctx, data, _env| *data += 1)
-        .padding(5.0);
-
-    Flex::column().with_child(label).with_child(button)
+    gui(data)
 }
