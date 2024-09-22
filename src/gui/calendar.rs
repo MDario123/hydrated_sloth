@@ -6,7 +6,7 @@ use druid::{Widget, WidgetExt};
 
 const HORIZONTAL_PADDING: f64 = 0.0;
 
-const VERTICAL_PADDING: f64 = 2.0;
+const VERTICAL_PADDING: f64 = 10.0;
 
 pub(crate) fn calendar(state: State) -> impl Widget<()> {
     let mut calendar = Flex::column();
