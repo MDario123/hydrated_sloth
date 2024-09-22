@@ -20,6 +20,7 @@ const WATER_COLOR: Color = Color::rgb8(0x40, 0xE0, 0xD0);
 const WATER_WIDTH: f64 = 5.0;
 
 pub(crate) fn day_square(state: &State, date: &DateTime<Local>, parity: u32) -> impl Widget<()> {
+    // TODO: fix, this will error in a year
     let is_day_in_curr_month = date.month() == Local::now().month();
     let mult = if is_day_in_curr_month {
         1.0
