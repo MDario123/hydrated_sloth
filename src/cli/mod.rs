@@ -2,7 +2,7 @@ use chrono::{DateTime, Local};
 use clap::{Parser, Subcommand};
 
 #[derive(Parser, Debug)]
-#[command(name="Hydrated Sloth", version="0.1.0", author="Manuel & Alberto", about="Minimalistic widget to track sleep and hydration.", long_about = None)]
+#[command(name="Hydrated Sloth", version="0.2.0", author="Manuel & Alberto", about="Minimalistic widget to track sleep and hydration.", long_about = None)]
 pub struct Args {
     #[command(subcommand)]
     pub subcommand: Subcomm,
