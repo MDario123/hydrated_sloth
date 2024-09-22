@@ -87,5 +87,5 @@ fn get_units_from_duration(duration: &Duration) -> f64 {
 
 fn get_multiplied_color(color: Color) -> Color {
     let (r, g, b, a) = color.as_rgba();
-    Color::rgba((r * MULTIPLIER), (g * MULTIPLIER), (b * MULTIPLIER), a)
+    Color::rgba(r * MULTIPLIER, g * MULTIPLIER, b * MULTIPLIER, a)
 }

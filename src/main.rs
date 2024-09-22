@@ -1,6 +1,6 @@
 mod gui;
 
-use chrono::{DateTime, Duration, Local, TimeZone};
+use chrono::{DateTime, Duration, Local};
 use druid::{Data, PlatformError};
 use gui::gui;
 
