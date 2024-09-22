@@ -5,7 +5,6 @@ mod state;
 use chrono::Local;
 use druid::PlatformError;
 use gui::gui;
-use std::path::Path;
 
 use clap::Parser;
 use cli::{Args, Subcomm};
@@ -29,7 +28,9 @@ fn update_state(state: &mut State, args: &Args) {
 }
 
 fn main() -> Result<(), PlatformError> {
-    let state_file: &Path = Path::new("State");
+    let data_dir = dirs::data_dir().unwrap().join("hydrated_sloth");
+    let data_path = data_dir.join("data.json");
+    let state_file = data_path.as_path();
 
     let args = Args::parse();
     let mut state = load_state(state_file).expect("Failed to load state");

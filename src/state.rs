@@ -13,6 +13,13 @@ pub struct State {
 }
 
 pub fn load_state(state_file: &Path) -> Result<State, std::io::Error> {
+    #[cfg(debug_assertions)]
+    println!("Loading state from {:?}", state_file);
+
+    if let Some(parent) = Path::new(state_file).parent() {
+        std::fs::create_dir_all(parent)?;
+    }
+
     let mut file = std::fs::OpenOptions::new()
         .create(true)
         .append(true)
