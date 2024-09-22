@@ -28,5 +28,26 @@
           gtk3
         ];
       };
+
+      packages.${system}.default = pkgs.rust.packages.stable.rustPlatform.buildRustPackage {
+        name = "hydrated_sloth";
+        src = ./.;
+
+        cargoHash = "sha256-5QCzkcPawW3AZKM/C7LXPKOu2t7TTM7ULMvPoO7Y9zE=";
+
+        nativeBuildInputs = with pkgs; [
+          pkg-config
+          gcc
+          rustc
+          cargo
+        ];
+
+        buildInputs = with pkgs; [
+          glib
+          pango
+          gdk-pixbuf
+          gtk3
+        ];
+      };
     };
 }
