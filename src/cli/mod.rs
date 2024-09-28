@@ -21,7 +21,12 @@ pub enum Subcomm {
     #[command(about = "Start the gui.")]
     Gui,
     #[command(about = "Update water information.")]
-    Water,
+    Water {
+        #[arg(
+            long_help = "Drank at this point in time. Supports formats like '20 minutes ago' or '5 min ago'."
+        )]
+        at: Option<Time>,
+    },
     #[command(about = "Update sleep information.")]
     Sleep {
         #[arg(

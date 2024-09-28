@@ -12,8 +12,9 @@ use state::{load_state, save_state, State};
 
 fn update_state(state: &mut State, args: &Args) {
     match args.subcommand {
-        Subcomm::Water => {
-            state.water.push(Local::now());
+        Subcomm::Water { at } => {
+            let at = at.map(|x| x.date).unwrap_or(Local::now());
+            state.water.push(at);
             println!("Just drank water!💖💖💖");
         }
         Subcomm::Sleep { from } => {
