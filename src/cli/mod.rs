@@ -1,8 +1,16 @@
-use chrono::{DateTime, Local};
+use std::str::FromStr;
+
+use chrono::{DateTime, Local, TimeZone};
 use clap::{Parser, Subcommand};
 
 #[derive(Parser, Debug)]
-#[command(name="Hydrated Sloth", version="0.2.0", author="Manuel & Alberto", about="Minimalistic widget to track sleep and hydration.", long_about = None)]
+#[command(
+    name="Hydrated Sloth", 
+    version="0.2.0", 
+    author="Manuel & Alberto", 
+    about="Minimalistic widget to track sleep and hydration.", 
+    long_about = None
+)]
 pub struct Args {
     #[command(subcommand)]
     pub subcommand: Subcomm,
@@ -17,10 +25,23 @@ pub enum Subcomm {
     #[command(about = "Update sleep information.")]
     Sleep {
         #[arg(
-            long_help = "Went to sleep at this point in time. Assumed to wake up right now.
-Must be in format RFC 3339. Recommended to generate with `date`.
-e.g. `date -d '8 hours ago' --rfc-3339 c`"
+            long_help = "Went to sleep at this point in time. Assumed to wake up right now. Supports formats like '11:00 PM yesterday'"
         )]
-        from: DateTime<Local>,
+        from: Time,
     },
+}
+
+#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Clone, Copy)]
+pub struct Time {
+    pub date: DateTime<Local>,
+}
+
+impl FromStr for Time {
+    type Err = fuzzydate::Error;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        let date = fuzzydate::parse(s)?;
+        let date = Local.from_local_datetime(&date).unwrap();
+        Ok(Time { date })
+    }
 }

@@ -17,6 +17,7 @@ fn update_state(state: &mut State, args: &Args) {
             println!("Just drank water!💖💖💖");
         }
         Subcomm::Sleep { from } => {
+            let from = from.date;
             let now = Local::now();
             assert!(from <= now, "You come from the future bro?");
             let sleep = (from, now - from);
