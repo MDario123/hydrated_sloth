@@ -33,7 +33,7 @@
         name = "hydrated_sloth";
         src = ./.;
 
-        cargoHash = "sha256-5QCzkcPawW3AZKM/C7LXPKOu2t7TTM7ULMvPoO7Y9zE=";
+        cargoHash = "sha256-1VwwBRmk87IpZjoR1cfQ5R+A26qtd2mMa7Shm0/Xd2g=";
 
         nativeBuildInputs = with pkgs; [
           pkg-config
